@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: gnuelf.sh 13 2021-04-18 12:45:24Z rhubarb-geek-nz $
+# $Id: gnuelf.sh 30 2022-01-12 19:52:56Z rhubarb-geek-nz $
 #
 
 ../pkg/deb.sh $@
@@ -25,3 +25,4 @@
 ../pkg/netbsd.sh $@
 ../pkg/freebsd.sh $@
 ../pkg/openbsd.sh $@
+../pkg/slack.sh $@
