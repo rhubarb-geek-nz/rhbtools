@@ -1,4 +1,4 @@
-#!/bin/sh -ex
+#!/bin/sh -e
 #
 #  Copyright 2008, Roger Brown
 #
@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: rpm.sh 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+# $Id: rpm.sh 13 2021-04-18 12:45:24Z rhubarb-geek-nz $
 #
 
 RPMBUILD=rpm
@@ -123,7 +123,7 @@ done
 rm -rf $TGTPATH
 mkdir -p $TGTPATH
 
-$RPMBUILD --buildroot "$BUILDROOT" --define "_rpmdir $TGTPATH" -bb "$SPECFILE"
+$RPMBUILD --buildroot "$BUILDROOT" --define "_rpmdir $TGTPATH" --define "_build_id_links none" -bb "$SPECFILE"
 
 find $TGTPATH -type f -name "*.rpm" | while read N
 do

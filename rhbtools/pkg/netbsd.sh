@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: deb.sh 13 2021-04-18 12:45:24Z rhubarb-geek-nz $
+# $Id: netbsd.sh 13 2021-04-18 12:45:24Z rhubarb-geek-nz $
 #
 
 FLAG=
@@ -48,48 +48,67 @@ do
 	fi
 done
 
+if pkg_info -V
+then
+	echo building package
+else
+	exit 0
+fi
+
 . ../version.sh
-PKGNAME=rhbtools
-PKGROOT=opt/RHBtools
+
+PKGNAME=rhbtools-$VERSION.tgz
+SRCROOT=$INTDIR/pkg.root
+METAROOT=$INTDIR/pkg.meta
 
 clean()
 {
-	rm -rf "$INTDIR/data"
+	rm -rf $SRCROOT $METAROOT
 }
 
 trap clean 0
 
 clean
 
-mkdir -p "$INTDIR/data/DEBIAN" "$INTDIR/data/$PKGROOT/bin"
+mkdir -p "$SRCROOT/opt/RHBtools/bin" "$METAROOT"
 
 for d in socket tcpiptry when stat asuser what textconv hexdump ptyexec lockexec not svninfo
 do
 	find "$OUTDIR/bin" -type f -name $d | while read N
 	do
-		cp "$N" "$INTDIR/data/$PKGROOT/bin/$d"
+		cp "$N" "$SRCROOT/opt/RHBtools/bin/$d"
+
 		if test "$STRIP" != ""
-		then
-			"$STRIP" "$INTDIR/data/$PKGROOT/bin/$d"
+		then 
+			$STRIP "$SRCROOT/opt/RHBtools/bin/$d"
 		fi
 	done
 done
 
-if dpkg --print-architecture
-then
-	ARCH=$(dpkg --print-architecture)
-	PACKAGE_NAME="$PKGNAME"_"$VERSION"_"$ARCH".deb
+(
+	set -e
+	echo HOMEPAGE=http://rhbtools.sf.net
+	echo MACHINE_ARCH=$(uname -p)
+	echo OPSYS=$(uname -s)
+	echo OS_VERSION=$(uname -r)
+	echo PKGTOOLS_VERSION=$(pkg_info -V)
+) > "$METAROOT/BUILD_INFO"
 
-	cat > "$INTDIR/data/DEBIAN/control" <<EOF
-Package: $PKGNAME
-Version: $VERSION
-Architecture: $ARCH
-Maintainer: rhubarb-geek-nz@users.sourceforge.net
-Section: misc
-Priority: extra
-Description: Set of common tools built for GNU
+(
+	set -e
+	echo "@name rhbtools-$VERSION"
+	cd $SRCROOT
+	find opt -type d | while read N
+	do
+		echo "@pkgdir $N" 
+	done
+	find opt -type f
+) > "$METAROOT/CONTENTS"
+
+echo "Set of common tools built for GNU" >"$METAROOT/COMMENT"
+
+cat >"$METAROOT/DESC" <<EOF
+Set of common tools built for GNU that typically cannot easily be done with a shell script
 EOF
 
-	dpkg-deb --root-owner-group --build "$INTDIR/data" "$OUTDIR_DIST/$PACKAGE_NAME"
-	ls -ld "$OUTDIR_DIST/$PACKAGE_NAME"
-fi
+pkg_create -v -B "$METAROOT/BUILD_INFO" -c "$METAROOT/COMMENT" -g wheel -u root -d "$METAROOT/DESC" -I / -f "$METAROOT/CONTENTS" -p "$SRCROOT" -F gzip "$OUTDIR_DIST/$PKGNAME"

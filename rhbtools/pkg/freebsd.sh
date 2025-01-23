@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: deb.sh 13 2021-04-18 12:45:24Z rhubarb-geek-nz $
+# $Id: freebsd.sh 13 2021-04-18 12:45:24Z rhubarb-geek-nz $
 #
 
 FLAG=
@@ -49,47 +49,57 @@ do
 done
 
 . ../version.sh
-PKGNAME=rhbtools
-PKGROOT=opt/RHBtools
 
-clean()
+PKGNAME=rhbtools
+SRCROOT=$INTDIR/pkg.root
+MANIFEST=$INTDIR/manifest
+PLIST=$INTDIR/plist
+
+cleanup()
 {
-	rm -rf "$INTDIR/data"
+	rm -rf $SRCROOT $MANIFEST $PLIST	
 }
 
-trap clean 0
+trap cleanup 0
 
-clean
+cleanup
 
-mkdir -p "$INTDIR/data/DEBIAN" "$INTDIR/data/$PKGROOT/bin"
+PREFIX=
+PKGDIR=opt/RHBtools
+
+mkdir -p $SRCROOT/$PREFIX/$PKGDIR/bin
 
 for d in socket tcpiptry when stat asuser what textconv hexdump ptyexec lockexec not svninfo
 do
 	find "$OUTDIR/bin" -type f -name $d | while read N
 	do
-		cp "$N" "$INTDIR/data/$PKGROOT/bin/$d"
+		BN=$(basename "$N")
+		cp "$N" "$SRCROOT/$PREFIX/$PKGDIR/bin/$BN"
 		if test "$STRIP" != ""
-		then
-			"$STRIP" "$INTDIR/data/$PKGROOT/bin/$d"
-		fi
+		then 
+			$STRIP "$SRCROOT/$PREFIX/$PKGDIR/bin/$BN"
+		fi 
 	done
 done
 
-if dpkg --print-architecture
-then
-	ARCH=$(dpkg --print-architecture)
-	PACKAGE_NAME="$PKGNAME"_"$VERSION"_"$ARCH".deb
-
-	cat > "$INTDIR/data/DEBIAN/control" <<EOF
-Package: $PKGNAME
-Version: $VERSION
-Architecture: $ARCH
-Maintainer: rhubarb-geek-nz@users.sourceforge.net
-Section: misc
-Priority: extra
-Description: Set of common tools built for GNU
+cat > $MANIFEST <<EOF
+name $PKGNAME
+version $VERSION
+desc Set of common tools built for GNU
+www http://rhbtools.sf.net
+origin devel/rhbtools
+comment Set of common tools built for GNU that typically cannot easily be done with a shell script
+maintainer rhubarb-geek-nz@users.sourceforge.net
+prefix /$PREFIX
 EOF
 
-	dpkg-deb --root-owner-group --build "$INTDIR/data" "$OUTDIR_DIST/$PACKAGE_NAME"
-	ls -ld "$OUTDIR_DIST/$PACKAGE_NAME"
+(
+	cd $SRCROOT/$PREFIX
+	find $PKGDIR/bin -type f
+) > $PLIST
+
+if pkg create -M "$MANIFEST" -o "$OUTDIR_DIST" -r "$SRCROOT" -v -p "$PLIST"
+then
+	pkg info -F "$OUTDIR_DIST/$PKGNAME-$VERSION.txz"
+	pkg info -l -F "$OUTDIR_DIST/$PKGNAME-$VERSION.txz"
 fi

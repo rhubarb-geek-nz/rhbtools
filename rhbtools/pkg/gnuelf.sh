@@ -1,4 +1,4 @@
-#!/bin/sh -ex
+#!/bin/sh -e
 #
 #  Copyright 2008, Roger Brown
 #
@@ -17,8 +17,11 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: gnuelf.sh 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+# $Id: gnuelf.sh 13 2021-04-18 12:45:24Z rhubarb-geek-nz $
 #
 
 ../pkg/deb.sh $@
 ../pkg/rpm.sh $@
+../pkg/netbsd.sh $@
+../pkg/freebsd.sh $@
+../pkg/openbsd.sh $@

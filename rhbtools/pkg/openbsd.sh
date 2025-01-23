@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: deb.sh 13 2021-04-18 12:45:24Z rhubarb-geek-nz $
+# $Id: openbsd.sh 13 2021-04-18 12:45:24Z rhubarb-geek-nz $
 #
 
 FLAG=
@@ -49,47 +49,68 @@ do
 done
 
 . ../version.sh
-PKGNAME=rhbtools
-PKGROOT=opt/RHBtools
+
+PKGNAME=rhbtools-$VERSION.tgz
+SRCROOT=$INTDIR/pkg.root
+METAROOT=$INTDIR/pkg.meta
 
 clean()
 {
-	rm -rf "$INTDIR/data"
+	rm -rf $SRCROOT $METAROOT
 }
 
 trap clean 0
 
 clean
 
-mkdir -p "$INTDIR/data/DEBIAN" "$INTDIR/data/$PKGROOT/bin"
+mkdir -p "$SRCROOT/opt/RHBtools/bin" "$METAROOT"
 
 for d in socket tcpiptry when stat asuser what textconv hexdump ptyexec lockexec not svninfo
 do
 	find "$OUTDIR/bin" -type f -name $d | while read N
 	do
-		cp "$N" "$INTDIR/data/$PKGROOT/bin/$d"
+		cp "$N" "$SRCROOT/opt/RHBtools/bin/$d"
+
 		if test "$STRIP" != ""
-		then
-			"$STRIP" "$INTDIR/data/$PKGROOT/bin/$d"
-		fi
+		then 
+			$STRIP "$SRCROOT/opt/RHBtools/bin/$d"
+		fi 
 	done
 done
 
-if dpkg --print-architecture
-then
-	ARCH=$(dpkg --print-architecture)
-	PACKAGE_NAME="$PKGNAME"_"$VERSION"_"$ARCH".deb
+(
+	set -e
+	cd $SRCROOT
+	find opt -type d | while read N
+	do
+		echo "@dir $N" 
+	done
+	find opt -type f
+) > "$METAROOT/CONTENTS" 
 
-	cat > "$INTDIR/data/DEBIAN/control" <<EOF
-Package: $PKGNAME
-Version: $VERSION
-Architecture: $ARCH
-Maintainer: rhubarb-geek-nz@users.sourceforge.net
-Section: misc
-Priority: extra
-Description: Set of common tools built for GNU
+cat >"$METAROOT/DESC" <<EOF
+Set of common tools built for GNU that typically cannot easily be done with a shell script
 EOF
 
-	dpkg-deb --root-owner-group --build "$INTDIR/data" "$OUTDIR_DIST/$PACKAGE_NAME"
-	ls -ld "$OUTDIR_DIST/$PACKAGE_NAME"
+COMMENT="Set of common tools built for GNU"
+MACHINE_ARCH=$(uname -p)
+HOMEPAGE=http://rhbtools.sf.net
+MAINTAINER=rhubarb-geek-nz@users.sourceforge.net
+FULLPKGPATH=devel/rhbtools
+FTP=yes
+
+if pkg_create \
+		-A "$MACHINE_ARCH"\
+		-d "$METAROOT/DESC" \
+		-D "COMMENT=$COMMENT" \
+		-D "HOMEPAGE=$HOMEPAGE" \
+		-D "MAINTAINER=$MAINTAINER" \
+		-D "FULLPKGPATH=$FULLPKGPATH" \
+		-D "FTP=$FTP" \
+		-f "$METAROOT/CONTENTS" \
+		-B "$SRCROOT" \
+		-p / \
+		"$OUTDIR_DIST/$PKGNAME"
+then
+	ls -ld "$OUTDIR_DIST/$PKGNAME"
 fi

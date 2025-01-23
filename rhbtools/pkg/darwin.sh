@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-#  Copyright 2021, Roger Brown
+#  Copyright 2008, Roger Brown
 #
 #  This file is part of Roger Brown's Toolkit.
 #
@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: deb.sh 13 2021-04-18 12:45:24Z rhubarb-geek-nz $
+# $Id: darwin.sh 13 2021-04-18 12:45:24Z rhubarb-geek-nz $
 #
 
 FLAG=
@@ -49,47 +49,27 @@ do
 done
 
 . ../version.sh
-PKGNAME=rhbtools
-PKGROOT=opt/RHBtools
+PKGNAME=RHBtools
+APPLIST="asuser hexdump lockexec not ptyexec socket stat svninfo tcpiptry textconv what when"
 
-clean()
+cleanup()
 {
-	rm -rf "$INTDIR/data"
+	rm -rf "$INTDIR/bom"	
 }
 
-trap clean 0
+trap cleanup 0
 
-clean
+rm -rf "$INTDIR/bom" 
+mkdir -p "$INTDIR/bom/bin"
 
-mkdir -p "$INTDIR/data/DEBIAN" "$INTDIR/data/$PKGROOT/bin"
-
-for d in socket tcpiptry when stat asuser what textconv hexdump ptyexec lockexec not svninfo
+for d in $APPLIST
 do
-	find "$OUTDIR/bin" -type f -name $d | while read N
+	find "$OUTDIR/bin" -type f -name "$d" | while read N
 	do
-		cp "$N" "$INTDIR/data/$PKGROOT/bin/$d"
-		if test "$STRIP" != ""
-		then
-			"$STRIP" "$INTDIR/data/$PKGROOT/bin/$d"
-		fi
+		cp "$N" "$INTDIR/bom/bin"
 	done
 done
 
-if dpkg --print-architecture
-then
-	ARCH=$(dpkg --print-architecture)
-	PACKAGE_NAME="$PKGNAME"_"$VERSION"_"$ARCH".deb
+rm -rf "$OUTDIR_DIST/$PKGNAME.pkg"
 
-	cat > "$INTDIR/data/DEBIAN/control" <<EOF
-Package: $PKGNAME
-Version: $VERSION
-Architecture: $ARCH
-Maintainer: rhubarb-geek-nz@users.sourceforge.net
-Section: misc
-Priority: extra
-Description: Set of common tools built for GNU
-EOF
-
-	dpkg-deb --root-owner-group --build "$INTDIR/data" "$OUTDIR_DIST/$PACKAGE_NAME"
-	ls -ld "$OUTDIR_DIST/$PACKAGE_NAME"
-fi
+pkgbuild --root "$INTDIR/bom" --identifier nz.geek.rhubarb.rhbtools --version "$VERSION" --install-location "/usr/local/opt/$PKGNAME" "$OUTDIR_DIST/$PKGNAME.pkg"
