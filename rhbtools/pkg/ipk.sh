@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: ipk.sh 40 2023-12-28 03:51:41Z rhubarb-geek-nz $
+# $Id: ipk.sh 41 2023-12-28 03:57:04Z rhubarb-geek-nz $
 #
 
 FLAG=
@@ -87,7 +87,7 @@ do
 	done
 done
 
-if dpkg --print-architecture
+if grep "^OPENWRT_ARCH=" /etc/os-release
 then
 	ARCH=$(dpkg --print-architecture)
 	PACKAGE_NAME="$PKGNAME"_"$VERSION"_"$ARCH".ipk
