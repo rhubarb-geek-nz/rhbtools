@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-#  $Id: makedefs.mk 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+#  $Id: makedefs.mk 37 2023-12-27 19:55:42Z rhubarb-geek-nz $
 
 !IF "$(PLATFORM_DEF)" == ""
 PLATFORM_DEF=win32
@@ -91,7 +91,7 @@ BUILDTYPE_HOST=$(BUILDTYPE)
 !ENDIF
 
 !IF "$(RHBTOOLS_BIN)" == ""
-RHBTOOLS_BIN=$(ProgramFiles)\rhubarb.geek.nz\RHBtools\bin
+RHBTOOLS_BIN=$(ProgramFiles)\rhubarb-geek-nz\RHBtools\bin
 !ENDIF
 
 !IF "$(OUTDIR_BASE)" == ""
