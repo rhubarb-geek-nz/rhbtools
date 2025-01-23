@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-#  $Id: rhbtools.mak 9 2020-06-06 09:15:32Z rhubarb-geek-nz $
+#  $Id: rhbtools.mak 11 2020-06-08 20:12:29Z rhubarb-geek-nz $
 
 !include $(MAKEDEFS)
 
@@ -30,7 +30,7 @@ TARGET_ZIP=$(OUTDIR_DIST)\$(PKGNAME).zip
 TARGET_WSX=$(INTDIR)\$(PKGNAME).$(PLATFORM).wsx
 TARGET_DDF=$(INTDIR)\$(PKGNAME).$(PLATFORM).ddf
 COMMON_DDF=$(INTDIR)\$(PKGNAME).ddf
-SRCLIST=socket kill assassin binhex unbinhex hexdump chown find findapi wol svninfo depvers depends version tcpiptry when what xargs textconv cpp config idltool inetserv 
+SRCLIST=kill assassin binhex unbinhex hexdump chown find findapi wol svninfo depvers depends version tcpiptry when what xargs textconv cpp config idltool inetserv 
 DDF2WXS_DLL=..\..\toolbox2\ddf2wxs\bin\$(BUILDTYPE)\netcoreapp2.1\ddf2wxs.dll
 MAKEZIP_DLL=..\..\toolbox2\makezip\bin\$(BUILDTYPE)\netcoreapp2.1\makezip.dll
 DEPVERS_H=..\..\include\$(PLATFORM)\depvers.h
@@ -55,10 +55,11 @@ $(COMMON_DDF): $(INTDIR) ..\win32\$(PKGNAME).mak
 	echo .Set MaxDiskFileCount=0 >> $@
 	echo .Set MaxDiskSize=0 >> $@
 	echo .Set DestinationDir=bin >> $@
-	for %d in ( $(SRCLIST) ) do if exist $(OUTDIR_BIN)\%d.exe echo $(OUTDIR_BIN)\%d.exe >> $@
-	for %d in ( $(SRCLIST) ) do if exist $(OUTDIR_TOOLS)\%d.exe echo $(OUTDIR_TOOLS)\%d.exe >> $@
+	for %d in ( socket $(SRCLIST) ) do if exist $(OUTDIR_BIN)\%d.exe echo $(OUTDIR_BIN)\%d.exe >> $@
+	for %d in ( socket $(SRCLIST) ) do if exist $(OUTDIR_TOOLS)\%d.exe echo $(OUTDIR_TOOLS)\%d.exe >> $@
 	echo .Set DestinationDir=src >> $@
 	for %d in ( $(SRCLIST) ) do if exist ..\..\%d\src\%d.c echo ..\..\%d\src\%d.c >> $@
+	echo ..\..\socket2\src\socket.c >> $@
 	
 $(INTDIR)\$(PKGNAME).win32x64.ddf: $(COMMON_DDF)
 	copy /Y $(COMMON_DDF) $@
