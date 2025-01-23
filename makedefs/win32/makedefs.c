@@ -20,35 +20,16 @@
  */
 
 /* 
- * $Id: makedefs.c 7 2020-06-06 02:59:05Z rhubarb-geek-nz $
+ * $Id: makedefs.c 9 2020-06-06 09:15:32Z rhubarb-geek-nz $
  */
 
 #ifdef _MSC_VER
-#	if (_MSC_VER < 1200)
-#		define VAR_PLATFORM_HOST win32vc4
-#	elif (_MSC_VER < 1400)
-#		define VAR_PLATFORM_HOST win32vc6
-#	elif (_MSC_VER < 1500)
-#		define VAR_PLATFORM_HOST msvs2005
-#	elif (_MSC_VER < 1600)
-#		define VAR_PLATFORM_HOST msvs2008
-#	elif (_MSC_VER < 1700)
-#		define VAR_PLATFORM_HOST msvs2010
-#	elif (_MSC_VER < 1800)
-#		define VAR_PLATFORM_HOST msvs2012
-#	elif (_MSC_VER < 1900)
-#		define VAR_PLATFORM_HOST msvs2013
+#	if defined(_M_AMD64) ||  defined(_M_AMD64)
+#		define VAR_PLATFORM win32x64
+#		define VAR_PLATFORM_HOST win32x64
 #	else
+#		define VAR_PLATFORM win32x86
 #		define VAR_PLATFORM_HOST win32x86
-#	endif
-#	if defined(_M_IX86)
-#		define VAR_PLATFORM VAR_PLATFORM_HOST
-#	else
-#		if defined(_WIN64)
-#			define VAR_PLATFORM win32x64
-#		else
-#			define VAR_PLATFORM win32x86
-#		endif
 #	endif
 #	ifdef _DEBUG
 #		define VAR_BUILDTYPE Debug

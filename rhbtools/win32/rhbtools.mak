@@ -16,36 +16,74 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-#  $Id: rhbtools.mak 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+#  $Id: rhbtools.mak 9 2020-06-06 09:15:32Z rhubarb-geek-nz $
 
 !include $(MAKEDEFS)
 
+# update code "{997A37B6-44E9-469D-8E71-C643E9D2D6F4}"
+
 PKGNAME=rhbtools
-OUTDIR_TMP=$(OUTDIR_BIN)\..\tmp
+INTDIR=$(BUILDTYPE)
 TARGET_MSI=$(OUTDIR_DIST)\$(PKGNAME).msi
-SRCLIST=socket2 kill assassin binhex unbinhex hexdump chown find findapi wol svninfo depvers depends version tcpiptry regsvr32 when what xargs textconv cpp config idltool inetserv regsvr64
-MAKEDEFS_CFS=..\..\makedefs\$(PLATFORM)\$(BUILDTYPE)\makedefs.cfl
+TARGET_CAB=$(OUTDIR_DIST)\$(PKGNAME).cab
+TARGET_ZIP=$(OUTDIR_DIST)\$(PKGNAME).zip
+TARGET_WSX=$(INTDIR)\$(PKGNAME).$(PLATFORM).wsx
+TARGET_DDF=$(INTDIR)\$(PKGNAME).$(PLATFORM).ddf
+COMMON_DDF=$(INTDIR)\$(PKGNAME).ddf
+SRCLIST=socket kill assassin binhex unbinhex hexdump chown find findapi wol svninfo depvers depends version tcpiptry when what xargs textconv cpp config idltool inetserv 
+DDF2WXS_DLL=..\..\toolbox2\ddf2wxs\bin\$(BUILDTYPE)\netcoreapp2.1\ddf2wxs.dll
+MAKEZIP_DLL=..\..\toolbox2\makezip\bin\$(BUILDTYPE)\netcoreapp2.1\makezip.dll
+DEPVERS_H=..\..\include\$(PLATFORM)\depvers.h
 
 all:
 
 clean:
-	$(CLEAN) $(TARGET_MSI)  $(OUTDIR_DIST)\$(PKGNAME)-*.msi
+	$(CLEAN) $(TARGET_MSI) $(TARGET_WSX) $(TARGET_ZIP) $(TARGET_CAB) $(TARGET_DDF) $(COMMON_DDF) setup.inf setup.rpt $(PKGNAME).$(PLATFORM).wixobj $(OUTDIR_DIST)\$(PKGNAME).wixpdb
 	
-dist: $(TARGET_MSI)
+dist:  $(TARGET_ZIP) $(TARGET_CAB) $(TARGET_MSI)
 
-$(TARGET_MSI): $(OUTDIR_TOOLS)\version.exe $(MMPKGDIR)\$(PKGNAME).mm $(MAKEDEFS_CFS)
-	set OUTDIR_DIST=$(OUTDIR_DIST)
-	set BUILDTYPE=$(BUILDTYPE)
-	set PLATFORM=$(PLATFORM)
-	set OLDPATH=$(PATH)
-	if exist $(OUTDIR_TMP) rmdir /S /Q $(OUTDIR_TMP)
-	mkdir $(OUTDIR_TMP)
-	mkdir $(OUTDIR_TMP)\src
-	for %d in ( $(SRCLIST) ) do copy ..\..\%d\src\*.c $(OUTDIR_TMP)\src
-	dir $(OUTDIR_TMP)\src
-	copy $(MMPKGDIR)\*.* $(OUTDIR_TMP)
-	"$(RHBTOOLS_BIN)\depvers.exe" --guid "{997A37B6-44E9-469D-8E71-C643E9D2D6F4}" --type msi --name $(PKGNAME) >$(OUTDIR_TMP)\$(PKGNAME).ver <$(MAKEDEFS_CFS)
-	type $(OUTDIR_TMP)\$(PKGNAME).ver
-	call ..\..\makedefs\win32\makemsi.bat $(OUTDIR_TMP) $(PKGNAME).mm
-	copy /Y $(OUTDIR_TMP)\out\$(PKGNAME).mm\MSI\$(PKGNAME)*.msi $(OUTDIR_DIST)
-	rmdir /S /Q $(OUTDIR_TMP)
+$(INTDIR):
+	mkdir $@
+
+$(COMMON_DDF): $(INTDIR) ..\win32\$(PKGNAME).mak
+	echo .Set CabinetName1=$(PKGNAME).cab > $@
+	echo .Set DiskDirectory1=$(OUTDIR_DIST) >> $@
+	echo .Set CabinetFileCountThreshold=0 >> $@
+	echo .Set FolderFileCountThreshold=0 >> $@
+	echo .Set FolderSizeThreshold=0 >> $@
+	echo .Set MaxCabinetSize=0 >> $@
+	echo .Set MaxDiskFileCount=0 >> $@
+	echo .Set MaxDiskSize=0 >> $@
+	echo .Set DestinationDir=bin >> $@
+	for %d in ( $(SRCLIST) ) do if exist $(OUTDIR_BIN)\%d.exe echo $(OUTDIR_BIN)\%d.exe >> $@
+	for %d in ( $(SRCLIST) ) do if exist $(OUTDIR_TOOLS)\%d.exe echo $(OUTDIR_TOOLS)\%d.exe >> $@
+	echo .Set DestinationDir=src >> $@
+	for %d in ( $(SRCLIST) ) do if exist ..\..\%d\src\%d.c echo ..\..\%d\src\%d.c >> $@
+	
+$(INTDIR)\$(PKGNAME).win32x64.ddf: $(COMMON_DDF)
+	copy /Y $(COMMON_DDF) $@
+	echo ..\..\regsvr64\src\regsvr64.c >> $@
+	echo .Set DestinationDir=bin >> $@
+	echo $(OUTDIR_TOOLS)\regsvr64.exe >> $@
+
+$(INTDIR)\$(PKGNAME).win32x86.ddf: $(COMMON_DDF)
+	copy /Y $(COMMON_DDF) $@
+	echo ..\..\regsvr32\src\regsvr32.c >> $@
+	echo .Set DestinationDir=bin >> $@
+	echo $(OUTDIR_TOOLS)\regsvr32.exe >> $@
+
+$(TARGET_WSX): $(TARGET_DDF) "$(DEPVERS_H)" ..\pkg\$(PLATFORM).wxs
+	dotnet "$(DDF2WXS_DLL)" -i ..\pkg\$(PLATFORM).wxs -o $@ -d "$(TARGET_DDF)" -h "$(DEPVERS_H)" -p $(PKGNAME)
+
+$(TARGET_MSI): $(OUTDIR_TOOLS)\version.exe $(TARGET_WSX)
+	"$(WIX)\bin\candle.exe" $(TARGET_WSX) -ext WixUtilExtension 
+	"$(WIX)\bin\light.exe" -cultures:null -out $@ $(PKGNAME).$(PLATFORM).wixobj -ext WixUtilExtension 
+
+$(TARGET_CAB): $(TARGET_DDF)
+	if exist setup.inf del setup.inf
+	if exist setup.rpt del setup.rpt
+	makecab /F $(TARGET_DDF)
+
+$(TARGET_ZIP): $(TARGET_DDF)
+	makecab /F $(TARGET_DDF)
+	dotnet "$(MAKEZIP_DLL)" -d $(TARGET_DDF) -o $@
