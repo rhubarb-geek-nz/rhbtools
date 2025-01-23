@@ -17,11 +17,16 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: makedefs.sh 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+# $Id: makedefs.sh 4 2020-05-29 22:12:37Z rhubarb-geek-nz $
 #
 
 CHMOD_EXECUTABLE="u+x"
-CONFIG_GUESS=../../config/unix/config.guess
+if test -x  /usr/share/misc/config.guess
+then
+	CONFIG_GUESS=/usr/share/misc/config.guess
+else
+	CONFIG_GUESS=../../config/unix/config.guess
+fi
 DEPENDS_SH=../../toolbox/depends.sh
 
 for d in ../../toolbox/*.sh \

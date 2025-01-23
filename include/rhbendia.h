@@ -20,7 +20,7 @@
  */
 
 /* 
- * $Id: rhbendia.h 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+ * $Id: rhbendia.h 4 2020-05-29 22:12:37Z rhubarb-geek-nz $
  */
 
 #if (!defined(_PLATFORM_BIG_ENDIAN_)) && \
@@ -74,6 +74,7 @@
 		defined(__i386) || \
 		defined(__alpha) || \
 		defined(__arm__) || \
+		defined(__aarch64__) || \
 		defined(_M_IX86) || \
 		defined(__x86_64__) || \
 		((defined(__mips__)||defined(__mips))&&(defined(__MIPSEL__)||defined(MIPSEL))) || \
