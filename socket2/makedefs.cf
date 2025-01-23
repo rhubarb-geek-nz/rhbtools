@@ -1,0 +1,3 @@
+NAME socket2
+DEPENDS config
+PROVIDES socket2

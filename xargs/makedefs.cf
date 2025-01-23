@@ -1,0 +1,3 @@
+NAME xargs
+PROVIDES xargs
+DEPENDS config

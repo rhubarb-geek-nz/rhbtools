@@ -1,0 +1,3 @@
+NAME version
+DEPENDS buildenv
+PROVIDES version

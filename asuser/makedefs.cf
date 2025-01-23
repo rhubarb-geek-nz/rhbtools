@@ -1,0 +1,3 @@
+NAME asuser
+PROVIDES asuser
+DEPENDS buildenv

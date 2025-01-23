@@ -1,0 +1,3 @@
+NAME inetserv
+DEPENDS config
+PROVIDES inetserv

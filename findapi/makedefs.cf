@@ -1,0 +1,3 @@
+NAME findapi
+DEPENDS buildenv
+PROVIDES findapi

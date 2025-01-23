@@ -1,0 +1,3 @@
+NAME config
+DEPENDS include preamble
+PROVIDES config

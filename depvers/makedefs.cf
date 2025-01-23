@@ -1,0 +1,3 @@
+NAME depvers
+PROVIDES depvers
+DEPENDS buildenv

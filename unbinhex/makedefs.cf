@@ -1,0 +1,3 @@
+NAME unbinhex
+DEPENDS buildenv
+PROVIDES unbinhex

@@ -1,0 +1,3 @@
+NAME regsvr32
+DEPENDS buildenv
+PROVIDES regsvr32

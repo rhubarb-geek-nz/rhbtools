@@ -1,0 +1,3 @@
+NAME hexdump
+DEPENDS buildenv
+PROVIDES hexdump

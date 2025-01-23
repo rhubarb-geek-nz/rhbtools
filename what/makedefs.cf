@@ -1,0 +1,3 @@
+NAME what
+DEPENDS config
+PROVIDES what

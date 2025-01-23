@@ -1,0 +1,3 @@
+NAME find
+PROVIDES find
+DEPENDS buildenv dirent

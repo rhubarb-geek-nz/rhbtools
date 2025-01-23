@@ -1,0 +1,3 @@
+NAME svninfo
+DEPENDS config
+PROVIDES svninfo

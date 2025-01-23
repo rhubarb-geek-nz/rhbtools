@@ -1,0 +1,3 @@
+NAME depends
+DEPENDS buildenv
+PROVIDES depends
