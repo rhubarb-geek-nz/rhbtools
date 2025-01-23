@@ -20,7 +20,7 @@
  */
 
  /* 
-  * $Id: ddf2wxs.cs 8 2020-06-06 06:46:22Z rhubarb-geek-nz $
+  * $Id: ddf2wxs.cs 10 2020-06-06 09:42:12Z rhubarb-geek-nz $
   */
  
 using System;
@@ -29,7 +29,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml;
 
-namespace wixvers
+namespace ddf2wxs
 {
     class DirectoryEntry
     {
