@@ -20,13 +20,18 @@
  */
 
 /* 
- * $Id: makedefs.c 35 2022-11-20 18:56:50Z rhubarb-geek-nz $
+ * $Id: makedefs.c 38 2023-12-27 20:47:56Z rhubarb-geek-nz $
  */
 
 #ifdef _MSC_VER
 #	if defined(_WIN64)
-#		define VAR_PLATFORM win32x64
-#		define VAR_PLATFORM_HOST win32x64
+#		ifdef _M_ARM64
+#			define VAR_PLATFORM win64arm
+#			define VAR_PLATFORM_HOST win64arm
+#		else
+#			define VAR_PLATFORM win32x64
+#			define VAR_PLATFORM_HOST win32x64
+#		endif
 #	else
 #		define VAR_PLATFORM win32x86
 #		define VAR_PLATFORM_HOST win32x86

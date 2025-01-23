@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-#  $Id: rhbtools.mak 34 2022-11-20 18:46:07Z rhubarb-geek-nz $
+#  $Id: rhbtools.mak 38 2023-12-27 20:47:56Z rhubarb-geek-nz $
 
 !include $(MAKEDEFS)
 
@@ -62,6 +62,12 @@ $(COMMON_DDF): $(INTDIR) ..\win32\$(PKGNAME).mak
 	echo ..\..\socket2\src\socket.c >> $@
 	
 $(INTDIR)\$(PKGNAME).win32x64.ddf: $(COMMON_DDF)
+	copy /Y $(COMMON_DDF) $@
+	echo ..\..\regsvr64\src\regsvr64.c >> $@
+	echo .Set DestinationDir=bin >> $@
+	echo $(OUTDIR_TOOLS)\regsvr64.exe >> $@
+
+$(INTDIR)\$(PKGNAME).win64arm.ddf: $(COMMON_DDF)
 	copy /Y $(COMMON_DDF) $@
 	echo ..\..\regsvr64\src\regsvr64.c >> $@
 	echo .Set DestinationDir=bin >> $@
