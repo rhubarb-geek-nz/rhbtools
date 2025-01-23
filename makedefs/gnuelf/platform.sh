@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: platform.sh 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+# $Id: platform.sh 19 2021-12-29 15:26:35Z rhubarb-geek-nz $
 #
 
 
@@ -373,15 +373,10 @@ fi
 
 if ( platform_not platform_dl_test >/dev/null 2>/dev/null )
 then
-	if ( platform_not platform_dl_test "-ldl" >/dev/null 2>/dev/null )
+	if ( platform_dl_test "-ldl" >/dev/null 2>/dev/null )
 	then
-		echo failed to link with dlopen
-		exit 1
+		CONFIG_LIBS="$CONFIG_LIBS -ldl"
 	fi
-
-#	echo dlopen needs "-ldl"
-
-	CONFIG_LIBS="$CONFIG_LIBS -ldl"
 fi
 
 if platform_not_member -D_PLATFORM_UNIX_ $PLATFORM_SCFLAGS
