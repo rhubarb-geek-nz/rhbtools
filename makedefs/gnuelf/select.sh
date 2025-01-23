@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: select.sh 14 2021-04-18 13:17:56Z rhubarb-geek-nz $
+# $Id: select.sh 18 2021-12-05 23:07:32Z rhubarb-geek-nz $
 #
 
 case "$1" in
@@ -37,6 +37,9 @@ vote )
 			echo 60
 			;;
 		*-qnx* ) 
+			echo 60
+			;;
+		*-gnu* ) 
 			echo 60
 			;;
 		* )
@@ -61,7 +64,7 @@ options )
 		*-netbsdelf1.* | *-dragonfly* ) 
 			echo seh findlibs
 			;;
-		*-netbsd* | *-qnx* | *-freebsd* | *-openbsd* ) 
+		*-netbsd* | *-qnx* | *-freebsd* | *-openbsd* | *-gnu* ) 
 			echo pthread findlibs
 			;;
 		* )
