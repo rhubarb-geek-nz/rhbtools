@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: freebsd.sh 13 2021-04-18 12:45:24Z rhubarb-geek-nz $
+# $Id: freebsd.sh 33 2022-05-21 07:14:35Z rhubarb-geek-nz $
 #
 
 FLAG=
@@ -100,6 +100,6 @@ EOF
 
 if pkg create -M "$MANIFEST" -o "$OUTDIR_DIST" -r "$SRCROOT" -v -p "$PLIST"
 then
-	pkg info -F "$OUTDIR_DIST/$PKGNAME-$VERSION.txz"
-	pkg info -l -F "$OUTDIR_DIST/$PKGNAME-$VERSION.txz"
+	pkg info -F "$OUTDIR_DIST/$PKGNAME-$VERSION.pkg"
+	pkg info -l -F "$OUTDIR_DIST/$PKGNAME-$VERSION.pkg"
 fi
