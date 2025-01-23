@@ -22,7 +22,7 @@
 
 APPLIST="asuser hexdump lockexec not ptyexec socket stat svninfo tcpiptry textconv what when"
 
-VERS=`../../toolbox/depdirs.sh rhbtools | ../../svnvers/unix/lastrev.sh`
+VERS=41
 
 HIVERS=`echo $VERS / 10000 | bc`
 LOVERS=`echo $VERS % 10000 | bc`
