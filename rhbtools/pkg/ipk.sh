@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: ipk.sh 39 2023-12-28 03:32:22Z rhubarb-geek-nz $
+# $Id: ipk.sh 40 2023-12-28 03:51:41Z rhubarb-geek-nz $
 #
 
 FLAG=
@@ -70,7 +70,7 @@ dpkg()
 		echo "$OPENWRT_ARCH"
 	)
 
-	return $$
+	return $?
 }
 
 mkdir -p "$INTDIR/data/DEBIAN" "$INTDIR/data/$PKGROOT/bin"
