@@ -20,7 +20,7 @@
  */
 
 /* 
- * $Id: when.c 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+ * $Id: when.c 16 2021-05-06 23:39:34Z rhubarb-geek-nz $
  */
 
 #include <rhbopt.h>
@@ -165,7 +165,7 @@ static void write_value(time_t t,const char *fmt)
 
 			if (val>=0)
 			{
-				char buf[9];
+				char buf[11];
 				int k=(i-8);
 
 				snprintf(buf,sizeof(buf),"%08d",val);

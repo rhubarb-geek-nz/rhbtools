@@ -135,12 +135,16 @@ static int handler_fd=-1;
 	if (handler_fd != -1)
 	{
 		char buf[1];
+		int x;
 /*		char str[256];
 		int x;*/
 		buf[0]=(char)i;
 /*		x=sprintf(str,"signal(%d)\n",i);
 		write(2,str,x);*/
-		write(handler_fd,buf,sizeof(buf));
+		x=write(handler_fd,buf,sizeof(buf));
+		if (x)
+		{
+		}
 	}
 }
 

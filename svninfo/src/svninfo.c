@@ -20,7 +20,7 @@
  */
  
 /* 
- * $Id: svninfo.c 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+ * $Id: svninfo.c 16 2021-05-06 23:39:34Z rhubarb-geek-nz $
  */
 
 
@@ -302,7 +302,8 @@ int fd;
 entries *e=NULL;
 
 	memcpy(path,p,m);
-	memcpy(path+m,svnEntries,sizeof(svnEntries)+1);
+	memcpy(path+m,svnEntries,sizeof(svnEntries));
+	path[m+sizeof(svnEntries)]=0;
 
 	fd=open(path,O_RDONLY OR_O_BINARY);
 
@@ -568,9 +569,13 @@ entry *f=NULL;
 					{
 						const char *p1="Properties on \'";
 						const char *p2="\':\n";
-						write(1,p1,(unsigned int)strlen(p1));
-						write(1,file,(unsigned int)strlen(file));
-						write(1,p2,(unsigned int)strlen(p2));
+						int w1=write(1,p1,(unsigned int)strlen(p1));
+						int w2=write(1,file,(unsigned int)strlen(file));
+						int w3=write(1,p2,(unsigned int)strlen(p2));
+						if (w1 || w2 || w3)
+						{
+							/* -Werror=unused-but-set-variable */
+						}
 					}
 
 					while (rc==0)
@@ -598,9 +603,13 @@ entry *f=NULL;
 										{
 											if (doList)
 											{
-												write(1,"  ",2);
-												write(1,buf,len);
-												write(1,"\n",1);
+												int w1=write(1,"  ",2);
+												int w2=write(1,buf,len);
+												int w3=write(1,"\n",1);
+												if (w1 || w2 || w3)
+												{
+													/* -Werror=unused-but-set-variable */
+												}
 											}
 											else
 											{
@@ -636,7 +645,12 @@ entry *f=NULL;
 
 										if ((len==i)&&(matchProp))
 										{
-											write(1,data,len);
+											int w1=write(1,data,len);
+
+											if (w1)
+											{
+												/* -Werror=unused-but-set-variable */
+											}
 
 											matchProp=0;
 										}

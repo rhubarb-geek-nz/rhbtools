@@ -20,7 +20,7 @@
  */
 
 /*
- * $Id: xargs.c 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+ * $Id: xargs.c 16 2021-05-06 23:39:34Z rhubarb-geek-nz $
  */
 
 #include <stdio.h>
@@ -65,7 +65,7 @@ static int do_command(int argc,char **argv)
 		}
 	}
 
-	args=malloc(argLen);
+	args=malloc(argLen+1);
 
 	p=args;
 

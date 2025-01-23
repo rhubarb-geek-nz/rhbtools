@@ -13,7 +13,7 @@
  */
 
 /* 
- * $Id: ptyexec.c 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+ * $Id: ptyexec.c 16 2021-05-06 23:39:34Z rhubarb-geek-nz $
  */
 
 
@@ -116,7 +116,7 @@ TRACE("ptsname")
 	{
 #		ifdef __linux__
 TRACE("open /dev/ptmx")
-		master_fd=open("/dev/ptmx",O_RDWR);*/
+		master_fd=open("/dev/ptmx",O_RDWR);
 TRACE("open returned")
 #		endif
 
@@ -223,8 +223,13 @@ static int handler_fd=-1;
 	if (handler_fd != -1)
 	{
 		char buf[1];
+		int rc;
 		buf[0]=(char)i;
-		write(handler_fd,buf,sizeof(buf));
+		rc=write(handler_fd,buf,sizeof(buf));
+		if (rc)
+		{
+			/* -Werror=unused-but-set-variable */
+		}
 	}
 }
 
@@ -466,8 +471,14 @@ int main
 				if (FD_ISSET(pipes[0],&fdr))
 				{
 					char sig[1];
+					int rc;
 					TRACE("signal handler");
-					read(pipes[0],sig,sizeof(sig));
+					rc=read(pipes[0],sig,sizeof(sig));
+
+					if (rc) 
+					{
+						/* -Werror=unused-but-set-variable */
+					}
 
 					break;
 				}

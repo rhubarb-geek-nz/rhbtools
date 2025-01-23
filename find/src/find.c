@@ -20,7 +20,7 @@
  */
 
 /*
- * $Id: find.c 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+ * $Id: find.c 16 2021-05-06 23:39:34Z rhubarb-geek-nz $
  */
 
 #include <sys/types.h>
@@ -141,7 +141,7 @@ DIR *dir=opendir(root);
 			if (de->d_name[0]!='.')
 			{
 				struct stat s;
-				char buf[256];
+				char buf[512];
 
 				strncpy(buf,root,sizeof(buf)-1);
 				strncat(buf,"/",sizeof(buf)-1);
