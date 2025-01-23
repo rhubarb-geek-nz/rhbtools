@@ -16,9 +16,9 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-#  $Id: makedefs.mk 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+#  $Id: makedefs.mk 6 2020-06-06 01:48:03Z rhubarb-geek-nz $
 
-COMMONOPTS=/W3 /MD /DNDEBUG /DWIN32 /D_WIN32_DCOM /D_WIN32_WINNT=0x500 /D_CRT_SECURE_NO_DEPRECATE /Zp8 /D_PLATFORM_LITTLE_ENDIAN_ /D_PLATFORM_WIN32_ /DNTDDI_VERSION=0x05000400	/D_CRT_NONSTDC_NO_DEPRECATE
+COMMONOPTS=/W3 /MD /DNDEBUG /DWIN32 /D_WIN32_DCOM /D_WIN32_WINNT=0x600 /D_CRT_SECURE_NO_DEPRECATE /Zp8 /D_PLATFORM_LITTLE_ENDIAN_ /D_PLATFORM_WIN32_ /D_CRT_NONSTDC_NO_DEPRECATE /D_WINSOCK_DEPRECATED_NO_WARNINGS
 STDOPT=$(COMMONOPTS) /WX
 STDOPTXX=$(COMMONOPTS)  /EHa
 CC=cl.exe /nologo
@@ -32,7 +32,6 @@ RCFLAGS=/DNDEBUG
 PLATFORM_DEF=win32
 POSTLINK_EXE=..\..\makedefs\$(PLATFORM)\postlink.bat 1
 POSTLINK_DLL=..\..\makedefs\$(PLATFORM)\postlink.bat 2
-MORE_INCLS=c:\Toolkits\openssl\include;..\..\rhbxtw32\include;c:\Toolkits\libcurl\include
 MMPKGDIR=..\mm64
 
 !INCLUDE ..\..\makedefs\$(PLATFORM_DEF)\makedefs.mk

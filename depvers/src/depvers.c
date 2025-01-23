@@ -20,7 +20,7 @@
  */
  
 /* 
- * $Id: depvers.c 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+ * $Id: depvers.c 6 2020-06-06 01:48:03Z rhubarb-geek-nz $
  */
 
 #include <sys/types.h>
@@ -33,6 +33,10 @@
 #	if !defined(popen) && !defined(pclose)
 #		define popen(x,y)			_popen(x,y)
 #		define pclose(x)			_pclose(x)
+#	endif
+#	if !defined(timezone)
+		static long myGetTimeZone(void) { long x=0; _get_timezone(&x); return x; }
+#		define timezone	myGetTimeZone()
 #	endif
 #endif
 

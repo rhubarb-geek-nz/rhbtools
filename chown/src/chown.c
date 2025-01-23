@@ -20,7 +20,7 @@
  */
 
 /*
- * $Id: chown.c 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+ * $Id: chown.c 6 2020-06-06 01:48:03Z rhubarb-geek-nz $
  */
 
 #include <windows.h>
@@ -86,7 +86,7 @@ int main(int argc,char **argv)
 	}
 	else
 	{
-		printf("usage: %s user files....\n");
+		printf("usage: %s user files....\n", argv[0]);
 	}
 
 	return err;

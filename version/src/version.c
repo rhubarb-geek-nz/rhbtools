@@ -20,7 +20,7 @@
  */
 
 /*
- * $Id: version.c 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+ * $Id: version.c 6 2020-06-06 01:48:03Z rhubarb-geek-nz $
  */
 
 #include <windows.h>
@@ -274,13 +274,13 @@ static int show_vers(char *p)
 
 					if (VerQueryValue(data,key,&pv2,&ui2))
 					{
-						printf("%s: %s\n",vn,pv2);
+						printf("%s: %s\n",vn,(const char *)pv2);
 
 						if (!stricmp(vn,"FileVersion"))
 						{
 							if (stricmp(pv2,filevers))
 							{
-								fprintf(stderr,"%s: %s != %s\n",vn,pv2,filevers);
+								fprintf(stderr,"%s: %s != %s\n",vn,(const char *)pv2,filevers);
 
 								rc=1;
 							}
@@ -290,7 +290,7 @@ static int show_vers(char *p)
 						{
 							if (stricmp(pv2,prodvers))
 							{
-								fprintf(stderr,"%s: %s != %s\n",vn,pv2,prodvers);
+								fprintf(stderr,"%s: %s != %s\n",vn,(const char *)pv2,prodvers);
 
 								rc=1;
 							}
@@ -313,7 +313,7 @@ static int show_vers(char *p)
 
 							if (stricmp(q,pv2))
 							{
-								fprintf(stderr,"%s: %s != %s\n",vn,pv2,q);
+								fprintf(stderr,"%s: %s != %s\n",vn,(const char *)pv2,q);
 
 								rc=1;
 							}
