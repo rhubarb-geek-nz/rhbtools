@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: deb.sh 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+# $Id: deb.sh 5 2020-05-29 22:35:36Z rhubarb-geek-nz $
 #
 
 FLAG=
@@ -158,7 +158,7 @@ EOF
 
 	echo "2.0" >debian-binary
 
-	ar r "$PACKAGE_NAME" debian-binary data.tar.gz control.tar.gz
+	ar r "$PACKAGE_NAME" debian-binary control.tar.gz data.tar.gz
 
 	rm -rf data data.tar.gz control control.tar.gz debian-binary
 )
