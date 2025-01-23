@@ -20,7 +20,7 @@
  */
 
 /* 
- * $Id: makedefs.c 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+ * $Id: makedefs.c 7 2020-06-06 02:59:05Z rhubarb-geek-nz $
  */
 
 #ifdef _MSC_VER
@@ -36,20 +36,18 @@
 #		define VAR_PLATFORM_HOST msvs2010
 #	elif (_MSC_VER < 1800)
 #		define VAR_PLATFORM_HOST msvs2012
-#	else
+#	elif (_MSC_VER < 1900)
 #		define VAR_PLATFORM_HOST msvs2013
+#	else
+#		define VAR_PLATFORM_HOST win32x86
 #	endif
 #	if defined(_M_IX86)
-#		define VAR_PLATFORM 	VAR_PLATFORM_HOST
+#		define VAR_PLATFORM VAR_PLATFORM_HOST
 #	else
 #		if defined(_WIN64)
 #			define VAR_PLATFORM win32x64
 #		else
-#			if (_MSC_VER < 1500)
-#				define VAR_PLATFORM win32ce4
-#			else
-#				define VAR_PLATFORM win32ce5
-#			endif
+#			define VAR_PLATFORM win32x86
 #		endif
 #	endif
 #	ifdef _DEBUG
