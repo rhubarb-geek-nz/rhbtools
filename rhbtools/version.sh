@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id: version.sh 1 2014-02-06 21:56:41Z rhubarb-geek-nz $
+# $Id: version.sh 2 2014-02-07 08:46:03Z rhubarb-geek-nz $
 #
 
 APPLIST="asuser hexdump lockexec not ptyexec socket stat svninfo tcpiptry textconv what when"
@@ -30,4 +30,4 @@ LOVERS=`echo $VERS % 10000 | bc`
 if test "$HIVERS" = ""; then HIVERS=0; fi
 if test "$LOVERS" = ""; then LOVERS=0; fi
 
-VERSION=1.5.$HIVERS.$LOVERS
+VERSION=1.6.$HIVERS.$LOVERS

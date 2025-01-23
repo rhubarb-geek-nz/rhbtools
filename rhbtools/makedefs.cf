@@ -1,6 +1,6 @@
 NAME rhbtools
 DEPENDS socket tcpiptry when stat asuser what textconv hexdump ptyexec lockexec chown binhex unbinhex svninfo find findapi socket2 regsvr32 version depends depvers cpp config idltool not inetserv regsvr64
 PROVIDES rhbtools
-VERSION 1.5
+VERSION 1.6
 PRODUCT RHB Toolkit
 DESCRIPTION development toolkit
