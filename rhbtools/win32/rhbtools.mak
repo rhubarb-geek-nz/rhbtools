@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-#  $Id: rhbtools.mak 11 2020-06-08 20:12:29Z rhubarb-geek-nz $
+#  $Id: rhbtools.mak 34 2022-11-20 18:46:07Z rhubarb-geek-nz $
 
 !include $(MAKEDEFS)
 
@@ -31,8 +31,8 @@ TARGET_WSX=$(INTDIR)\$(PKGNAME).$(PLATFORM).wsx
 TARGET_DDF=$(INTDIR)\$(PKGNAME).$(PLATFORM).ddf
 COMMON_DDF=$(INTDIR)\$(PKGNAME).ddf
 SRCLIST=kill assassin binhex unbinhex hexdump chown find findapi wol svninfo depvers depends version tcpiptry when what xargs textconv cpp config idltool inetserv 
-DDF2WXS_DLL=..\..\toolbox2\ddf2wxs\bin\$(BUILDTYPE)\netcoreapp2.1\ddf2wxs.dll
-MAKEZIP_DLL=..\..\toolbox2\makezip\bin\$(BUILDTYPE)\netcoreapp2.1\makezip.dll
+DDF2WXS_DLL=..\..\toolbox2\ddf2wxs\bin\$(BUILDTYPE)\net6.0\ddf2wxs.dll
+MAKEZIP_DLL=..\..\toolbox2\makezip\bin\$(BUILDTYPE)\net6.0\makezip.dll
 DEPVERS_H=..\..\include\$(PLATFORM)\depvers.h
 
 all:
